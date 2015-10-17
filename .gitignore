@@ -1,5 +1,6 @@
 .ropeproject
 db_repository/
+gendb_app.db
 instance/
 
 # Byte-compiled / optimized / DLL files
