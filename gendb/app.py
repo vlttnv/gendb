@@ -1,8 +1,9 @@
 """GenDB app init."""
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 
-from gendb.extensions import db
+from gendb.extensions import db, lm
+from gendb.models import User
 from .views.home import home_bp
 
 
@@ -15,6 +16,8 @@ def create_app():
     config_blueprints(gendb_app)
     config_extensions(gendb_app)
 
+    lm_decorators()
+
     return gendb_app
 
 
@@ -24,7 +27,18 @@ def config_blueprints(the_app):
 
 def config_extensions(the_app):
     db.init_app(the_app)
-    # lm.init_app(the_app)
+    lm.init_app(the_app)
     # oid.init_app(the_app)
     # rds.init_app(the_app)
     return
+
+
+def lm_decorators():
+    @lm.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+
+    @lm.unauthorized_handler
+    def unauthorized():
+        # TODO: flash
+        return redirect(url_for('home_bp.register'))
