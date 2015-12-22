@@ -15,7 +15,6 @@ home_bp = Blueprint('home_bp', __name__)
 
 @login_required
 @home_bp.route('/')
-@login_required
 def index():
     return render_template('/home/index.html')
 
@@ -42,7 +41,7 @@ def register():
 
 @home_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    """Remder login form and login user."""
+    """Render login form and login user."""
 
     form = LoginForm()
 

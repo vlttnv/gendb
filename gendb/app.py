@@ -4,7 +4,8 @@ from flask import Flask, redirect, url_for
 
 from gendb.extensions import db, lm
 from gendb.models import User
-from .views.home import home_bp
+from gendb.views.home import home_bp
+from gendb.views.projects import projects_bp
 
 
 def create_app():
@@ -23,6 +24,7 @@ def create_app():
 
 def config_blueprints(the_app):
     the_app.register_blueprint(home_bp)
+    the_app.register_blueprint(projects_bp)
 
 
 def config_extensions(the_app):
