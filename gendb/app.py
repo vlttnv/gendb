@@ -43,4 +43,4 @@ def lm_decorators():
     @lm.unauthorized_handler
     def unauthorized():
         # TODO: flash
-        return redirect(url_for('home_bp.register'))
+        return redirect(url_for('home_bp.login'))

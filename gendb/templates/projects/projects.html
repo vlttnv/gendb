@@ -3,5 +3,55 @@
 {{ super() }}
 {% endblock %}
 {% block body %}
-        <h1>Projects</h1>
+<!-- Modal -->
+<div class="modal fade" id="add_project" tabindex="-1" role="dialog" aria-labelledby="add_project_lable">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="add_project_lable">New Project</h4>
+      </div>
+      <div class="modal-body">
+          <form method="POST" action="{{url_for('projects_bp.add_project')}}">
+              {{ add_project.hidden_tag() }}
+              <div class="form-group">
+                      <input type="text" name="name" value="" class="form-control" id="name" placeholder="Project Name">
+              </div>
+              <div class="form-group">
+                      <textarea id="desciption" name="description" class="form-control" rows="2" placeholder="Project description"></textarea>
+              </div>
+             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+
+          </form>
+    </div>
+  </div>
+</div>
+
+<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add_project">Add Project</a>
+<br><br>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Owner</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in projects %}
+    <tr>
+        <th>{{ p.project_id }}</th>
+        <td>{{ p.name }}</td>
+        <td>{{ p.description }}</td>
+        <td><a href="mailto:{{p.owner}}">{{ p.owner }}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

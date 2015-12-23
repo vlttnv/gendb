@@ -2,8 +2,8 @@
 
 from hashlib import sha1
 
-from flask import Blueprint, render_template, redirect, url_for, flash
-from flask.ext.login import login_required, login_user, logout_user
+from flask import Blueprint, render_template, redirect, url_for, flash, g
+from flask.ext.login import login_required, login_user, logout_user, current_user
 from sqlalchemy.orm.exc import NoResultFound
 
 from gendb.extensions import db
@@ -11,6 +11,11 @@ from gendb.forms import RegisterForm, LoginForm
 from gendb.models import User
 
 home_bp = Blueprint('home_bp', __name__)
+
+
+@home_bp.before_request
+def before_request():
+    g.user = current_user
 
 
 @login_required
@@ -42,6 +47,9 @@ def register():
 @home_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """Render login form and login user."""
+
+    if g.user is not None and g.user.is_authenticated:
+        return redirect(url_for('home_bp.index'))
 
     form = LoginForm()
 
