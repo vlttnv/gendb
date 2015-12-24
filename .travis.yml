@@ -1,11 +1,10 @@
-# whitelist
-branches:
-    only:
-       - dev
 language: python
 ptyhon:
     - "3.5"
 
 install: "pip install -r requirements.txt"
 script: py.test
-
+# whitelist
+branches:
+    only:
+       - dev
