@@ -1,8 +1,7 @@
 .ropeproject
 db_repository/
 gendb_app.db
-instance/
-
+test.db
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

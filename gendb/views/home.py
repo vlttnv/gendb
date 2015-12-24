@@ -3,7 +3,9 @@
 from hashlib import sha1
 
 from flask import Blueprint, render_template, redirect, url_for, flash, g
-from flask.ext.login import login_required, login_user, logout_user, current_user
+from flask.ext.login import (
+    login_required, login_user, logout_user, current_user
+)
 from sqlalchemy.orm.exc import NoResultFound
 
 from gendb.extensions import db
@@ -21,7 +23,10 @@ def before_request():
 @login_required
 @home_bp.route('/')
 def index():
-    return render_template('/home/index.html')
+    return render_template(
+        '/home/index.html',
+        title='Overview'
+    )
 
 
 @home_bp.route('/register', methods=['GET', 'POST'])
