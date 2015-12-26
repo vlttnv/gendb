@@ -3,6 +3,14 @@
 {{ super() }}
 {% endblock %}
 {% block body %}
+
+<!---
+<ul class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Library</a></li>
+    <li class="active">Data</li>
+</ul>
+-->
 <!-- Modal -->
 <div class="modal fade" id="add_project" tabindex="-1" role="dialog" aria-labelledby="add_project_lable">
   <div class="modal-dialog" role="document">
@@ -47,7 +55,7 @@
     {% for p in projects %}
     <tr>
         <th>{{ p.project_id }}</th>
-        <td>{{ p.name }}</td>
+        <td><a href="{{url_for('projects_bp.project', project_id=p.project_id)}}">{{ p.name }}</a></td>
         <td>{{ p.description }}</td>
         <td><a href="mailto:{{p.owner}}">{{ p.owner }}</a></td>
     </tr>

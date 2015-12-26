@@ -4,7 +4,7 @@ from hashlib import sha1
 
 from flask import Blueprint, render_template, redirect, url_for, flash, g
 from flask.ext.login import (
-    login_required, login_user, logout_user, current_user
+    login_required, login_user, logout_user
 )
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -15,13 +15,8 @@ from gendb.models import User
 home_bp = Blueprint('home_bp', __name__)
 
 
-@home_bp.before_request
-def before_request():
-    g.user = current_user
-
-
-@login_required
 @home_bp.route('/')
+@login_required
 def index():
     return render_template(
         '/home/index.html',

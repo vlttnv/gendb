@@ -1,6 +1,6 @@
 """GenDB app init."""
 
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, g, session
 
 from gendb.extensions import db, lm
 from gendb.models import User
@@ -16,6 +16,7 @@ def create_app():
 
     config_blueprints(gendb_app)
     config_extensions(gendb_app)
+    config_befores(gendb_app)
 
     lm_decorators()
 
@@ -44,3 +45,16 @@ def lm_decorators():
     def unauthorized():
         # TODO: flash
         return redirect(url_for('home_bp.login'))
+
+
+def config_befores(the_app):
+    @the_app.before_request
+    def before_request():
+        """
+        A handler before every request. TODO: More.
+        """
+
+        if 'user_id' in session:
+            g.user = User.query.filter_by(id=session['user_id']).first()
+        else:
+            g.user = None

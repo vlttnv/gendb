@@ -5,7 +5,7 @@ from gendb.app import create_app
 from gendb.extensions import db as _db
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-TESTDB = os.path.join(basedir, 'gendb_app.db')
+TESTDB = os.path.join(basedir, 'test.db')
 TEST_DATABASE_URI = 'sqlite:///' + TESTDB
 
 

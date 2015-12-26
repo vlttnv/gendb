@@ -13,10 +13,13 @@ gendb = create_app()
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
+        print('Wrong!')
         sys.exit(1)
     elif sys.argv[1] == 'run':
+        print('Run.')
         gendb.run(debug=True, threaded=True, host='0.0.0.0')
     elif sys.argv[1] == 'db_create':
+        print('DB create.')
         with gendb.app_context():
             db.create_all()
         if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
@@ -32,6 +35,7 @@ if __name__ == "__main__":
                 api.version(SQLALCHEMY_MIGRATE_REPO)
             )
     elif sys.argv[1] == 'db_migrate':
+        print('DB migrate.')
         v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
         migration = (SQLALCHEMY_MIGRATE_REPO
                      + ('/versions/%03d_migration.py' % (v + 1))
@@ -54,6 +58,7 @@ if __name__ == "__main__":
         print('New migration saved as ' + migration)
         print('Current database version: ' + str(v))
     elif sys.argv[1] == 'db_upgrade':
+        print('DB migrate')
         api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
         v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
         print('Current database version: ' + str(v))
