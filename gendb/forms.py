@@ -1,7 +1,7 @@
 """Form definitions."""
 
 from flask.ext.wtf import Form
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired
 
 
@@ -17,5 +17,26 @@ class LoginForm(Form):
 
 
 class AddProjectForm(Form):
-    name = StringField('name', id='name', validators=[DataRequired()])
-    description = TextAreaField('description', id='description', validators=[DataRequired()])
+    name = StringField(
+        'name',
+        id='name',
+        validators=[DataRequired()]
+    )
+    description = TextAreaField(
+        'description',
+        id='description',
+        validators=[DataRequired()]
+    )
+
+
+class AddProjectContributerForm(Form):
+    email = StringField(
+        'name',
+        id='name',
+        validators=[DataRequired()]
+    )
+    project_id = HiddenField(
+        'project_id',
+        id='project_id',
+        validators=[DataRequired()]
+    )

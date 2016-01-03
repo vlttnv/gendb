@@ -4,8 +4,8 @@ from flask import Blueprint, redirect, url_for, render_template, g, flash
 from flask.ext.login import login_required
 
 from gendb.extensions import db
-from gendb.forms import AddProjectForm
-from gendb.models import Project, groups
+from gendb.forms import AddProjectForm, AddProjectContributerForm
+from gendb.models import Project, groups, User
 from sqlalchemy.orm.exc import NoResultFound
 
 projects_bp = Blueprint('projects_bp', __name__)
@@ -38,10 +38,13 @@ def project(project_id):
         flash('This project does not exist.', 'warning')
         return redirect(url_for('projects_bp.projects'))
 
+    print(project.contributers)
+
     return render_template(
         '/projects/project.html',
         title='Project Name',
-        project=project
+        project=project,
+        add_contrib=AddProjectContributerForm(project_id=project_id)
     )
 
 
@@ -71,6 +74,9 @@ def add_project():
         db.session.execute(ins)
 
         db.session.commit()
+    else:
+        flash('Incomplete form. Please fill all the fields.', 'warning')
+        return redirect(url_for('projects_bp.projects'))
 
     return redirect(url_for(
         'projects_bp.project',
@@ -94,3 +100,41 @@ def delete_project(project_id):
 
     flash('Project successfuly deleted.', 'success')
     return redirect(url_for('projects_bp.projects'))
+
+
+@projects_bp.route('/add_contributer', methods=['POST'])
+@login_required
+def add_contributer():
+    form = AddProjectContributerForm()
+
+    if form.validate_on_submit():
+        try:
+            User.query.filter_by(email=form.email.data).one()
+        except NoResultFound:
+            flash('This user email does not exist.', 'danger')
+            return redirect(url_for(
+                'projects_bp.project',
+                project_id=form.project_id.data
+            ))
+
+        # Insert in groups table
+        ins = groups.insert().values(
+            user_email=g.user.email,
+            project_id=form.project_id.data
+        )
+        db.session.execute(ins)
+
+        db.session.commit()
+
+        flash('Contributer added successfuly', 'success')
+    else:
+        flash('Incomplete form. Please fill all the fields.', 'warning')
+        return redirect(url_for(
+            'projects_bp.project',
+            project_id=form.project_id.data)
+        )
+
+    return redirect(url_for(
+        'projects_bp.project',
+        project_id=form.project_id.data)
+    )

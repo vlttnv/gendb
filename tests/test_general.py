@@ -16,7 +16,7 @@ class TestEndpoints:
         assert client.get(url_for('home_bp.login')).status == '200 OK'
 
 
-class TestUserAuth():
+class TestGeneral():
 
     def test_register(self, client, session):
         l = client.post(
@@ -93,6 +93,18 @@ class TestUserAuth():
 
         assert '200 OK' == l.status
         assert 'Add Project' in str(l.data)
+
+        l = client.post(
+            url_for('projects_bp.add_project'),
+            data={
+                'name': 'Test Project',
+                'description': 'description',
+            },
+            follow_redirects=True
+        )
+
+        assert '200 OK' == l.status
+        assert 'Delete' in str(l.data)
 
     def test_logout(self, client, session):
         l = client.get(

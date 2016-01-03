@@ -51,3 +51,10 @@ class Project(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.String(500))
     owner = db.Column(db.String(45), db.ForeignKey('user.email'))
+    contributers = db.relationship(
+        'User',
+        secondary=groups,
+        primaryjoin=(groups.c.project_id == project_id),
+        backref=db.backref('contributers', lazy='dynamic'),
+        lazy='dynamic'
+    )
