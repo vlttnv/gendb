@@ -7,6 +7,7 @@ from flask.ext.login import (
     login_required, login_user, logout_user
 )
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
 
 from gendb.extensions import db
 from gendb.forms import RegisterForm, LoginForm
@@ -35,8 +36,12 @@ def register():
         u.email = form.email.data
         u.password = sha1(form.pw1.data.encode('utf-8')).hexdigest()
 
-        db.session.add(u)
-        db.session.commit()
+        try:
+            db.session.add(u)
+            db.session.commit()
+        except IntegrityError:
+            flash('User already exists.', 'danger')
+            return redirect(url_for('home_bp.register'))
 
         login_user(u)
 

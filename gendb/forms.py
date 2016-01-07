@@ -29,7 +29,7 @@ class AddProjectForm(Form):
     )
 
 
-class AddProjectContributerForm(Form):
+class AddProjectContributorForm(Form):
     email = StringField(
         'name',
         id='name',

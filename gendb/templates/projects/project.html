@@ -4,15 +4,15 @@
 {% endblock %}
 {% block body %}
 <!-- Modal -->
-<div class="modal fade" id="add_project_contributer" tabindex="-1" role="dialog" aria-labelledby="add_project_contributer_lable">
+<div class="modal fade" id="add_project_contributor" tabindex="-1" role="dialog" aria-labelledby="add_project_contributor_lable">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="add_project_contributer_lable">Add Project Contributer</h4>
+        <h4 class="modal-title" id="add_project_contributor_lable">Add Project Contributor</h4>
       </div>
       <div class="modal-body">
-          <form method="POST" action="{{url_for('projects_bp.add_contributer')}}">
+          <form method="POST" action="{{url_for('projects_bp.add_contributor')}}">
               {{ add_contrib.hidden_tag() }}
               <div class="form-group">
                       <input type="text" name="email" value="" class="form-control" id="email" placeholder="User Email Address">
@@ -30,24 +30,25 @@
 </div>
 
 
-{% if g.user.email == project.owner %}
-<a href="{{url_for('projects_bp.delete_project', project_id=project.project_id)}}" class="btn btn-danger">Delete</a>
-<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add_project_contributer">Add Project Contributer</a>
-{% endif %}
-
 <div class="row">
     <div class="col-md-8">
+{% if g.user.email == project.owner %}
+<a href="{{url_for('projects_bp.delete_project', project_id=project.project_id)}}" class="btn btn-danger">Delete</a>
+<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add_project_contributor">Add Project Contributor</a>
+{% endif %}
+
+
     </div>
     <div class="col-md-4">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">Contributers</h3>
+                <h3 class="panel-title">Contributors</h3>
             </div>
             <div>
                 <ul class="list-group">
-                    {% for c in project.contributers %}
+                    {% for c in project.contributors %}
                     <li class="list-group-item">
-                    <span class="badge">14</span>
+                    <span class="badge"><a href='{{url_for('projects_bp.delete_contributor', project_id=project.project_id, contrib_id=c.email)}}'>X</a></span>
                     {{c.email}}
                     </li>
                     {% endfor %}
