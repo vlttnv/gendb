@@ -24,6 +24,7 @@ class User(db.Model):
 
     project_member = db.relationship(
         'Project',
+        viewonly=True,
         secondary=groups,
         primaryjoin=(groups.c.user_email == email),
         backref=db.backref('projects', lazy='dynamic'),
