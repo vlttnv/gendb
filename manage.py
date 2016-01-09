@@ -1,6 +1,6 @@
 import os.path
 
-import click
+import argparse
 import imp
 from migrate.versioning import api
 
@@ -12,17 +12,22 @@ from config import SQLALCHEMY_MIGRATE_REPO
 gendb = create_app()
 
 
-@click.group()
-def app():
-    return
+parser = argparse.ArgumentParser(description='GenDB manager.')
+parser.add_argument('-a', '--action', type=str,  help='Action to perform.')
+parser.add_argument('-hs', '--host', type=str, default='0.0.0.0', help='Address to bind to.')
 
 
-@app.command()
-def run():
-    gendb.run(debug=True, threaded=True, host='0.0.0.0')
+def db_action(h, db):
+    if db == 'create':
+        db_create()
+    elif db == 'migrate':
+        db_migrate()
+    elif db == 'upgrade':
+        db_upgrade()
+    else:
+        run(h)
 
 
-@app.command()
 def db_create():
     with gendb.app_context():
         db.create_all()
@@ -40,7 +45,6 @@ def db_create():
         )
 
 
-@app.command()
 def db_migrate():
     v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
     migration = (
@@ -66,12 +70,16 @@ def db_migrate():
     print('Current database version: ' + str(v))
 
 
-@app.command()
 def db_upgrade():
     api.upgrade(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
     v = api.db_version(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
     print('Current database version: ' + str(v))
 
 
+def run(h):
+    gendb.run(debug=True, threaded=True, host=h)
+
+
 if __name__ == "__main__":
-    app()
+    args = parser.parse_args()
+    db_action(args.host, args.action)
