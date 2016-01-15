@@ -44,7 +44,7 @@ def project(project_id):
 
     return render_template(
         '/projects/project.html',
-        title='Project Name',
+        title=project.name,
         project=project,
         add_contrib=AddProjectContributorForm(project_id=project_id)
     )
