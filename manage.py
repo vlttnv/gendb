@@ -4,12 +4,12 @@ import argparse
 import imp
 from migrate.versioning import api
 
-from gendb import create_app
+from gendb import app_init
 from gendb.extensions import db
 from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
 
-gendb = create_app()
+gendb = app_init
 
 
 parser = argparse.ArgumentParser(description='GenDB manager.')

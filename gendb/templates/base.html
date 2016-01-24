@@ -77,6 +77,28 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='js/vendor/jquery.ui.widget.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.iframe-transport.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.fileupload.js')}}"></script>
+    <script>
+    $(function () {
+        $('#fileupload').fileupload({
+          sequentialUploads: true,
+          done: function (e, data) {
+              console.log("uploaded: " + data.files[0].name)
+          },
+          maxChunkSize: 1000000,
+          progressall: function (e, data) {
+              var progress = parseInt(data.loaded / data.total * 100, 10);
+              $('#progress .progress-bar').css(
+                  'width',
+                  progress + '%'
+              );
+          }
+        });
+    });
+    </script>
+
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
 

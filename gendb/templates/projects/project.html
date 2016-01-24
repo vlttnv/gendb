@@ -35,6 +35,12 @@
 {% if g.user.email == project.owner %}
 <a href="{{url_for('projects_bp.delete_project', project_id=project.project_id)}}" class="btn btn-danger">Delete</a>
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add_project_contributor">Add Project Contributor</a>
+<input id="fileupload" type="file" name="files[]" data-url="{{url_for('engine_bp.upload_ind')}}" multiple>
+
+<div id="progress" class="progress progress-striped">
+        <div class="progress-bar progress-bar-success" style="width: 0%;"></div>
+    </div>
+
 {% endif %}
 
 
